@@ -63,6 +63,11 @@ const server = http.createServer(async (req, res) => {
       }
 
 
+      if (parsedUsers.find(el => el.name == name)) {
+        res.writeHead(403, { "content-type": "application/json" })
+        return res.end(JSON.stringify("User already exists"))
+      }
+
      if ( password.length < 4 ) {
             res.writeHead(405)
             res.end(JSON.stringify("There must be at least 4 characters"))
@@ -83,7 +88,7 @@ const server = http.createServer(async (req, res) => {
       
       if (!hasNumber) {
         res.writeHead(403, { "content-type": "application/json" })
-      return  res.end(JSON.stringify("Password must contain at least one number."));
+       return  res.end(JSON.stringify("Password must contain at least one number."));
       } 
       
       if (!hasSymbol) {
@@ -91,10 +96,7 @@ const server = http.createServer(async (req, res) => {
        return res.end(JSON.stringify("Password must contain at least one symbol."));
       } 
 
-      if (parsedUsers.find(el => el.name == name)) {
-        res.writeHead(403, { "content-type": "application/json" })
-        return res.end(JSON.stringify("User already exists"))
-      }
+    
 
       parsedUsers.push(parsedBody)
       fs.writeFile("./users.json", JSON.stringify(parsedUsers, null, 2))
